@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum StatusTitulo {
     PENDENTE("Pendente"),
-    PAGO("Pago");
+    PAGO("Pago"),
+    CANCELADO("Cancelado");
 
     private final String descricao;
 
