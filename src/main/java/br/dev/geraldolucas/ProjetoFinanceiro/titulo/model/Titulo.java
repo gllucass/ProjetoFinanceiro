@@ -7,10 +7,15 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "tb_titulos")
 @Getter
@@ -35,18 +40,17 @@ public class Titulo {
 
     @NotNull
     @Column(nullable = false)
-    LocalDateTime dataVencimento;
+    LocalDate dataVencimento;
 
-    @Column(nullable = false)
-    LocalDateTime dataPagamento;
+    LocalDate dataPagamento;
 
-    @NotNull
+    @CreatedDate
     @Column(nullable = false)
-    LocalDateTime dataCriacao = LocalDateTime.now();
+    LocalDateTime dataCriacao;
 
-    @NotNull
+    @LastModifiedDate
     @Column(nullable = false)
-    LocalDateTime dataAtualizacao = LocalDateTime.now();
+    LocalDateTime dataAtualizacao;
 
     @NotNull
     @Enumerated(EnumType.STRING)

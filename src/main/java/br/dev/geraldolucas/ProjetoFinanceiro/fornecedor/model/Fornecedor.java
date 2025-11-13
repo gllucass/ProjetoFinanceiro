@@ -4,16 +4,17 @@ import br.dev.geraldolucas.ProjetoFinanceiro.enums.UF;
 import br.dev.geraldolucas.ProjetoFinanceiro.titulo.model.Titulo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "tb_fornecedores")
 @NoArgsConstructor
@@ -70,11 +71,20 @@ public class Fornecedor {
     @Column(length = 100)
     private String complemento;
 
+    //dataCriacao e dataAtualizacao para fins de auditoria
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime dataCriacao;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime dataAtualizacao;
+
     //Opção para deixar o cadastro ativo ou não
     @Column(nullable = false)
     private boolean ativo = true;
 
-    @OneToMany(mappedBy = "fornecedor")
+    @OneToMany(mappedBy = "fornecedor", fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Titulo> titulos;
+    private List<Titulo> titulos = new ArrayList<>();
 }
